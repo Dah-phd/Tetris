@@ -139,7 +139,6 @@ class engine:
             if self.falling['1'][1] == self.falling['3'][1] and self.falling['2'][1] == self.falling['4'][1]:
                 return True
         return False
-        {'1': (1, 4), '2': (1, 5), '3': (2, 4), '4': (2, 5)}
 
     def _burn(self):
         score = 0
