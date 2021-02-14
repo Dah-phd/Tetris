@@ -20,6 +20,7 @@ class engine:
         self.board = [[0 for _ in range(10)] for _ in range(25)]
         self.off = False
         self.score = 0
+        self.que = random.randint(0, 6)
         self.block()
 
     def endgame(self):
@@ -68,7 +69,8 @@ class engine:
         if not any(self.board[:5]):
             self.endgame()
             return
-        self.falling = self.blocks[random.randint(0, 6)].copy()
+        self.falling = self.blocks[self.que].copy()
+        self.que = random.randint(0, 6)
         self._set()
         self.off = False
         return
@@ -82,7 +84,6 @@ class engine:
             for key, val in self.falling.items():
                 self.falling[key] = (val[0]+1, val[1])
             self._set()
-            print(self.falling)
             return
         self.off = True
         self.block()

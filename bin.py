@@ -1,20 +1,32 @@
 import tetris
 import pygame as pg
+import scoreing
 
 pg.init()
 klok = pg.time.Clock()
 
-w = 400
+w = 600
 h = 850
+pad_w = 190
+cube = pg.image.load('res\\cube.jpg')
+pg.mixer.music.load('res\\tet.mp3')
+pg.mixer.music.play(-1)
 
 
 def draw(instance, grid):
-    grid.fill((0, 0, 0))
+    grid.fill((135, 206, 235))
+    pg.draw.rect(grid, (0, 0, 0), (pad_w-10, 0, 10, h))
+    pg.draw.rect(grid, (100, 100, 50), (pad_w-9, 0, 8, h))
+    pg.draw.rect(grid, (0, 0, 0), (w-11, 0, 11, h))
+    pg.draw.rect(grid, (100, 100, 50), (w-10, 0, 9, h))
+    pg.draw.rect(grid, (100, 100, 50), (w-10, 0, 9, h))
+    pg.draw.rect(grid, (0, 0, 0), (0, h-10, w, 1))
+    pg.draw.rect(grid, (100, 100, 50), (0, h-9, w, 9))
+    pg.draw.rect(grid, (0, 0, 0), (0, 0, pad_w-10, h-10))
     for num_row, row in enumerate(instance.board[4:]):
         for num_sq, sq in enumerate(row):
             if sq == 1:
-                pg.draw.rect(grid, (200, 20, 20),
-                             ((40*num_sq, 40*num_row), (40, 40)))
+                grid.blit(cube, (pad_w + 40*num_sq, 40*num_row))
 
 
 def controls(instance):
