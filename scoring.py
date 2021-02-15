@@ -16,22 +16,22 @@ class highscore:
         self.high = high
         self._check()
 
-    def quarry(self, set_=10):
+    def quarry(self):
         '''
-        returns the top 10 scores,
-        the quarried results could be increase by ne set_= int,
-        if set_ = -1 quarries all.
+        returns all scores from the database.
 
         RETURNS LIST OF TUPLES
         '''
-        result = {}
+        result = []
         for score in self._pull().split('-<>-'):
-            val, name = self._decode(score)
-            result[name] = val
+            if not score:
+                return
+            else:
+                result.append(self._decode(score))
         if self.high == 'min':
-            return sorted(result.items(), key=lambda x: x[1])[:set_]
+            return sorted(result, key=lambda x: x[1])
         else:
-            return sorted(result.items(), key=lambda x: x[1], reverse=True)[:set_]
+            return sorted(result, key=lambda x: x[1], reverse=True)
 
     def new_score(self, value):
         self.value = value
@@ -47,23 +47,19 @@ class highscore:
 
     def _encode(self):
         value = str((self.value*5)/19+16)
-        name = self.name.replace('-', '!').replace('a', '9847y4').replace(
-            'o', '023y87t').replace('e', '87tsfuyg33').replace('u', 'vd98yvib2g').replace('i', 's98yqi3ulbg')
-        return value+'-'+name
+        return value+'-'+self.name
 
     def _decode(self, encoded):
         value, name = encoded.split('-')
         value = ((float(value)-16)*19)/5
-        name = name.replace('!', '-').replace('9847y4', 'a').replace(
-            '023y87t', 'o').replace('87tsfuyg33', 'e').replace('vd98yvib2g', 'u').replace('s98yqi3ulbg', 'i')
-        return value, name
+        return (name, value)
 
     def _pull(self):
         with open(self.base_name, 'r') as f:
             return f.read()
 
     def _save(self, data):
-        with open(self.base_name, 'x') as f:
+        with open(self.base_name, 'w') as f:
             f.write(data)
         return
 

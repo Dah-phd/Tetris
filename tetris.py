@@ -19,16 +19,10 @@ class engine:
         '''
         self.board = [[0 for _ in range(10)] for _ in range(25)]
         self.off = False
+        self.alive = True
         self.score = 0
         self.que = random.randint(0, 6)
         self.block()
-
-    def endgame(self):
-        '''
-        Used to spec what should happen if game is over
-        '''
-        print(self.score)
-        pass
 
     def prb(self):
         '''
@@ -67,7 +61,7 @@ class engine:
         '''
         self._burn()
         if not any(self.board[:5]):
-            self.endgame()
+            self.alive = False
             return
         self.falling = self.blocks[self.que].copy()
         self.que = random.randint(0, 6)

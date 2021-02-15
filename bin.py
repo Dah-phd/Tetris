@@ -1,16 +1,6 @@
 import tetris
 import pygame as pg
-import scoreing
-
-pg.init()
-klok = pg.time.Clock()
-
-w = 600
-h = 850
-pad_w = 190
-cube = pg.image.load('res\\cube.jpg')
-pg.mixer.music.load('res\\tet.mp3')
-pg.mixer.music.play(-1)
+import scoring
 
 
 def draw(instance, grid):
@@ -23,6 +13,14 @@ def draw(instance, grid):
     pg.draw.rect(grid, (0, 0, 0), (0, h-10, w, 1))
     pg.draw.rect(grid, (100, 100, 50), (0, h-9, w, 9))
     pg.draw.rect(grid, (0, 0, 0), (0, 0, pad_w-10, h-10))
+    grid.blit(font.render('SCORE:', True, (255, 255, 255)), (20, 60))
+    grid.blit(font.render(str(instance.score),
+                          True, (255, 255, 255)), (20, 100))
+    grid.blit(font.render('Player:', True, (255, 255, 255)), (20, 160))
+    grid.blit(font.render(str(new_score.name),
+                          True, (255, 255, 255)), (20, 200))
+    for square in instance.blocks[instance.que].values():
+        grid.blit(cube, (square[0]*40-30, 220+square[1]*40))
     for num_row, row in enumerate(instance.board[4:]):
         for num_sq, sq in enumerate(row):
             if sq == 1:
@@ -42,6 +40,45 @@ def controls(instance):
         instance.prb()
 
 
+def pre():
+    grid = pg.display.set_mode((w, h))
+    run = True
+    hs = new_score.quarry()
+    name = ''
+    while run:
+        klok.tick(30)
+        grid.fill((0, 0, 0))
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                run = False
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_RETURN:
+                    new_score.name = name
+                    run = False
+                    pg.display.quit()
+                    main()
+                elif event.key == pg.K_ESCAPE:
+                    run = False
+                elif event.key == pg.K_BACKSPACE:
+                    name = name[:-1]
+                else:
+                    if len(name) < 20:
+                        name += event.unicode
+        grid.blit(font.render('Player name:', True, (255, 255, 255)), (20, 20))
+        grid.blit(font.render(str(name), True, (255, 255, 255)), (20, 60))
+        grid.blit(font.render('HIGH SCORES:', True, (255, 255, 255)), (20, 100))
+        if hs:
+            for position, score in enumerate(hs[:10 if len(hs) > 10 else len(hs)]):
+                grid.blit(font.render(str(position+1), True,
+                                      (255, 255, 255)), (140+position*40, 40))
+                grid.blit(font.render(score[0], True,
+                                      (255, 255, 255)), (140+position*40, 30))
+                grid.blit(font.render(score[1], True,
+                                      (255, 255, 255)), (140+position*40, 150))
+
+        pg.display.update()
+
+
 def main():
     tet = tetris.engine()
     tet.start()
@@ -56,13 +93,27 @@ def main():
         else:
             move += 1
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT or event.type == pg.K_ESCAPE:
                 run = False
             controls(tet)
         draw(tet, grid)
+        if not tet.alive:
+            new_score.new_score(tet.score)
+            run = False
         pg.display.update()
+    pre()
 
 
 if __name__ == '__main__':
-    main()
+    pg.init()
+    klok = pg.time.Clock()
+    font = pg.font.SysFont('Times New Roman', 33)
+    w = 600
+    h = 850
+    pad_w = 190
+    cube = pg.image.load('res\\cube.jpg')
+    pg.mixer.music.load('res\\tet.mp3')
+    pg.mixer.music.play(-1)
+    new_score = scoring.highscore('res\\save')
+    pre()
     pg.quit()
