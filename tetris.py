@@ -60,7 +60,7 @@ class engine:
         Generates new blocks
         '''
         self._burn()
-        if not any(self.board[:5]):
+        if 1 in self.board[4]:
             self.alive = False
             return
         self.falling = self.blocks[self.que].copy()

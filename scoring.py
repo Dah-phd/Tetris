@@ -52,7 +52,7 @@ class highscore:
     def _decode(self, encoded):
         value, name = encoded.split('-')
         value = ((float(value)-16)*19)/5
-        return (name, value)
+        return (name, int(value))
 
     def _pull(self):
         with open(self.base_name, 'r') as f:

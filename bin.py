@@ -70,11 +70,11 @@ def pre():
         if hs:
             for position, score in enumerate(hs[:10 if len(hs) > 10 else len(hs)]):
                 grid.blit(font.render(str(position+1), True,
-                                      (255, 255, 255)), (140+position*40, 40))
+                                      (255, 255, 255)), (20, 160+position*40))
                 grid.blit(font.render(score[0], True,
-                                      (255, 255, 255)), (140+position*40, 30))
-                grid.blit(font.render(score[1], True,
-                                      (255, 255, 255)), (140+position*40, 150))
+                                      (255, 255, 255)), (70, 160+position*40))
+                grid.blit(font.render(str(score[1]), True,
+                                      (255, 255, 255)), (420, 160+position*40))
 
         pg.display.update()
 
