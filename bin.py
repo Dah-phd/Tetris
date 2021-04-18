@@ -111,9 +111,9 @@ if __name__ == '__main__':
     w = 600
     h = 850
     pad_w = 190
-    cube = pg.image.load('res\\cube.jpg')
-    pg.mixer.music.load('res\\tet.mp3')
+    cube = pg.image.load('res/cube.jpg')
+    pg.mixer.music.load('res/tet.mp3')
     pg.mixer.music.play(-1)
-    new_score = scoring.highscore('res\\save')
+    new_score = scoring.highscore('res/save')
     pre()
     pg.quit()
