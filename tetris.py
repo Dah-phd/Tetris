@@ -110,10 +110,7 @@ class engine:
                         val[0],
                         val[1] + ((base[1]-val[1])*2))
         for val in flipped.values():
-            if val[1] < 0 or val[1] > 9:
-                self._set()
-                return
-            elif self.board[val[0]][val[1]] == 1:
+            if val[1] < 0 or val[1] > 9 or self.board[val[0]][val[1]] == 1:
                 self._set()
                 return
         self.falling = flipped
